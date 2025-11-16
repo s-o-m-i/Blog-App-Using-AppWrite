@@ -50,8 +50,8 @@ try {
     })
     return true
 } catch (error) {
+  console.log("Appwrite service :: deletePost :: error", error)
     return false;
-    console.log("Appwrite service :: deletePost :: error", error)
 
 }
 
@@ -81,6 +81,40 @@ async  getPosts(queries = [Query.equal("status", "active")]){
     }
 }
 
+async uploadFile(file){
+  try {
+    return await this.bucket.createFile({
+    bucketId: conf.appwriteBucketId,
+    fileId: ID.unique(),
+    file: file
+}
+    )
+  } catch (error) {
+    console.log("Appwrite service :: uploadFile :: error", error)
+  }
+}
+
+async deleteFile(fileId){
+  try {
+    await this.bucket.deleteFile({
+    bucketId: conf.appwriteBucketId,
+    fileId: fileId,
+  });
+  return true;
+  } catch (error) {
+    console.log("Appwrite service :: deleteFile :: error", error)
+    return false
+  }
+
+}
+ getFilePreview(fileId){
+
+    return this.bucket.getFilePreview({
+    bucketId: conf.appwriteBucketId,
+    fileId: fileId,
+  });
+
+}
 }
 
 
